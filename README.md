@@ -2,6 +2,15 @@
 
 **An impact-aware framework for assessing and prioritizing data quality issues in real-world analytics.**
 
+## Highlights
+
+- **Ten quality pillars:** completeness, uniqueness, validity, consistency, timeliness, accuracy, integrity, conformity, freshness and traceability, combined into one weighted Dataset Health Index.
+- **Impact-aware ranking:** each issue is scored by severity, downstream sensitivity, business exposure and a capped frequency term, then compared with frequency ranking (Spearman and Kendall).
+- **Safe remediation:** cleaning is applied to a copy, then checked with two-sample Kolmogorov–Smirnov tests and before-and-after health scores.
+- **Governance:** PII pattern detection, data-contract validation and an audit log.
+- **Live web app:** FastAPI backend with WebSocket pipeline progress, and a React dashboard with a drift timeline, row-level inspector, lineage view and shareable read-only reports.
+- **Explainable by design:** a deterministic, rule-based engine, so every score traces back to a rule and a weight. No model training is needed.
+
 ## 1. Overview
 
 Most data-quality tooling ranks issues by how *often* they occur. DQI ranks
