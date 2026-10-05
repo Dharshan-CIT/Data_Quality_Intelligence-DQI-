@@ -1,0 +1,63 @@
+# DQI scoring configuration — every weight here is a deliberate, documented assumption.
+# Change these values to reflect your organization's actual risk tolerance and business model.
+# See docs/METHODOLOGY.md for the formulas that consume these numbers.
+
+# --- Impact scoring (dqi_core/impact/scoring.py) ---
+impact:
+  # Issue-type base severity on a 1-5 scale. Unlisted issue types fall back to `default_severity`.
+  severity:
+    duplicate_primary_key: 5
+    invalid_numeric_range: 4
+    missing_critical_field: 4
+    schema_violation: 4
+    invalid_categorical: 3
+    outlier_extreme: 3
+    stale_record: 3
+    duplicate_row: 2
+    formatting_inconsistency: 2
+    missing_noncritical_field: 2
+    future_date: 3
+    invalid_date: 4
+    default_severity: 2
+
+  # Downstream sensitivity multiplier (0-1) per column. Columns not listed use `default_sensitivity`.
+  # This represents how many downstream models/reports/decisions depend on the column.
+  downstream_sensitivity:
+    default_sensitivity: 0.4
+    critical_columns: []   # e.g. ["customer_id", "price", "quantity"] — set per-dataset in the UI
+
+  # Frequency is a contextual modifier only — capped so it cannot dominate severity x sensitivity x exposure.
+  frequency_modifier_cap: 0.15
+
+# --- Dataset Health Index (dqi_core/health.py) ---
+health_index:
+  weights:
+    completeness: 0.14
+    uniqueness: 0.10
+    validity: 0.14
+    consistency: 0.10
+    timeliness: 0.08
+    accuracy: 0.10
+    integrity: 0.12
+    conformity: 0.10
+    freshness: 0.08
+    traceability: 0.04
+  bands:
+    excellent: 90
+    good: 75
+    needs_attention: 55
+    poor: 35
+    # below `poor` => critical
+
+# --- Business impact estimation (dqi_core/business_impact.py) ---
+# These are DEFAULT assumptions only. The UI lets a user override them per dataset/session.
+# Values are never invented from the data — they are explicit, editable inputs.
+business_impact:
+  default_revenue_per_record: 0.0   # $ — 0 means "unconfigured"; UI must prompt user to set this
+  default_operational_cost_per_record: 0.0
+  impact_factor_by_severity:
+    5: 1.00
+    4: 0.70
+    3: 0.40
+    2: 0.15
+    1: 0.05

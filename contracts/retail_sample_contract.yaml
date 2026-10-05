@@ -1,0 +1,48 @@
+# Example data contract for data/sample/retail_sample.csv
+# Validate with: dqi_core.governance.contracts.validate_against_contract
+
+name: retail_sample_contract
+version: "1.0"
+columns:
+  order_id:
+    type: string
+    nullable: false
+  customer_id:
+    type: string
+    nullable: false
+  order_date:
+    type: date
+    nullable: false
+  quantity:
+    type: integer
+    nullable: false
+    min: 0
+    max: 1000
+  unit_price:
+    type: float
+    nullable: false
+    min: 0
+    max: 5000
+  discount_pct:
+    type: float
+    nullable: true
+    min: 0
+    max: 1
+  category:
+    type: string
+    nullable: true
+    allowed_values:
+      - Electronics
+      - Apparel
+      - Home & Garden
+      - Toys
+      - Groceries
+      - Sports
+  region:
+    type: string
+    nullable: true
+    allowed_values:
+      - North
+      - South
+      - East
+      - West

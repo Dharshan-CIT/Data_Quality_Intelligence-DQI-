@@ -1,0 +1,59 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "DQI: Backend (port 8000)",
+      "type": "process",
+      "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "uvicorn", "backend.main:app", "--port", "8000"],
+      "isBackground": true,
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "dqi" },
+      "problemMatcher": {
+        "owner": "dqi-backend",
+        "pattern": { "regexp": "^ERROR:\\s+(.*)$", "message": 1 },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Started server process",
+          "endsPattern": "Application startup complete"
+        }
+      }
+    },
+    {
+      "label": "DQI: Frontend (port 5173)",
+      "type": "shell",
+      "command": "npm.cmd run dev",
+      "options": { "cwd": "${workspaceFolder}/frontend" },
+      "isBackground": true,
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "dqi" },
+      "problemMatcher": {
+        "owner": "dqi-frontend",
+        "pattern": { "regexp": "^\\[vite\\].*(error|Error).*$", "message": 0 },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "VITE v",
+          "endsPattern": "Local:"
+        }
+      }
+    },
+    {
+      "label": "DQI: Start servers",
+      "dependsOn": ["DQI: Backend (port 8000)", "DQI: Frontend (port 5173)"],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    },
+    {
+      "label": "DQI: Open splash page",
+      "type": "shell",
+      "command": "Start-Process 'http://localhost:5173/intro'",
+      "presentation": { "reveal": "silent", "panel": "shared", "group": "dqi" },
+      "problemMatcher": []
+    },
+    {
+      "label": "DQI: Start everything",
+      "dependsOn": ["DQI: Start servers", "DQI: Open splash page"],
+      "dependsOrder": "sequence",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    }
+  ]
+}

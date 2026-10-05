@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+*.egg-info/
+.pytest_cache/
+reports/*.pdf
+reports/*.json
+reports/*.csv
+reports/shares/
+!reports/.gitkeep
+.streamlit/secrets.toml
+*.log
+
+# Frontend (React/Vite)
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
